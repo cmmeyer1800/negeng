@@ -28,11 +28,11 @@ jobs:
     - name: Build package
       run: python -m build
     - name: Archive build artifacts
+      if: ${{ matrix.python-version == '3.12' }}
       uses: actions/upload-artifact@v4
       with:
         name: dist
-        path: |
-            dist
+        path: dist/
     - name: Install package
       run: pip install dist/*.whl
     - name: Test package
