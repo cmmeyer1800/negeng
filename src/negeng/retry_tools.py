@@ -1,6 +1,9 @@
 import time
+import functools
+from typing import Callable
 
-def simple_retry(func, count: int = 3, sec: int = None, *args, **kwargs):
+
+def simple_retry(count: int = 3, sec: int = None, *args, **kwargs) -> Callable:
     """Retry a function until it returns a truthy value.
 
     :param func: The function to call.
@@ -8,13 +11,15 @@ def simple_retry(func, count: int = 3, sec: int = None, *args, **kwargs):
     :param kwargs: Keyword arguments to pass to the function.
     :return: The return value of the function.
     """
-    def _retry():
-        return func(*args, **kwargs)
-    
-    for _ in range(count):
-        try:
-            return _retry()
-        except Exception as e:
-            if time:
-                time.sleep(sec)
-            continue
+    def dec_retry(func):
+        @functools.wraps(func)
+        def inner_function(*args, **kwargs):
+            for _ in range(count):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    if sec is not None:
+                        time.sleep(sec)
+        return inner_function
+
+    return dec_retry
