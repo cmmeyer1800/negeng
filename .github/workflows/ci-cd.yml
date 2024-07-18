@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-    - name: Download a single artifact
+    - name: Download package build artifact
       uses: actions/download-artifact@v4
       with:
         name: dist
