@@ -32,5 +32,5 @@ license = {file = "LICENSE"}
 # [project.scripts]
 # spam-cli = "spam:main_cli"
 
-# [tool.setuptools_scm]
+[tool.setuptools_scm]
 
